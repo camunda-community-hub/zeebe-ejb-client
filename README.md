@@ -1,6 +1,22 @@
 # Zeebe EJB Client
 
+## Overview
+
+This example shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
+
+It contains a single startup bean to deploy the process diagram and activate the workers. [(ZeebeEjbProcessApplication)](src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
+
+This Zeebe application get all jobworker implementations injected to register them.
+
+The Job workers require an `@ApplicationScoped` for this. See [DeductCreditHandler](src/main/java/com/camunda/consulting/zeebe_ejb/worker/DeductCreditHandler.java).
+
+The Service implementation itself gets injected to the worker. They are annotated with `@Stateless`. See [CustomerService](src/main/java/org/camunda/consulting/services/CustomerService.java) 
+
 ## Start process instances
+
+The project contains a REST Api to start process instances. Check the content of the package `com.camunda.consulting.zeebe_ejb.rest`.
+
+To start process instances, use a REST client like curl:
 
 curl for cmd.exe
 
