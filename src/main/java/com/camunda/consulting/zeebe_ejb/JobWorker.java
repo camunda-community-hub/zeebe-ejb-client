@@ -10,8 +10,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD })
-@Inherited
+@Target(METHOD)
 public @interface JobWorker {
   
   String taskType();
@@ -27,5 +26,7 @@ public @interface JobWorker {
    * @return
    */
   long requestTimeout() default 30L;
+
+  boolean autoComplete() default true;
 
 }

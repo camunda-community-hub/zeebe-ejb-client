@@ -14,9 +14,9 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-@JobWorker(taskType = "creditDeduction", timeout = 15)
+
 @ApplicationScoped
-public class DeductCreditHandler implements JobHandler {
+public class DeductCreditHandler {
 
   private final CustomerService service;
   
@@ -26,16 +26,16 @@ public class DeductCreditHandler implements JobHandler {
   public DeductCreditHandler(CustomerService service) {
     this.service = service;
   }
-  
+
   public DeductCreditHandler() {
     this(null);
   }
-  
-  @Override
+
+  @JobWorker(taskType = "creditDeduction", timeout = 15, autoComplete = false)
   public void handle(JobClient client, ActivatedJob job) throws Exception {
-    
+
     LOG.info("handler invoked for job {}", job);
-    
+
     // extract variables from process instance
     Map<String, Object> variables = job.getVariablesAsMap();
     String customerId = (String) variables.get("customerId");
@@ -48,7 +48,7 @@ public class DeductCreditHandler implements JobHandler {
     resultVariables.put("openAmount", openAmount);
     resultVariables.put("customerCredit", customerCredit);
     client.newCompleteCommand(job).variables(resultVariables).send().join();
-    
+
     LOG.info("handler completed job {}", job);
   }
 

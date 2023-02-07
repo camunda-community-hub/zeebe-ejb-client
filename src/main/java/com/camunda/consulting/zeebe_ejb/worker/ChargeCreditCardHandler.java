@@ -10,9 +10,9 @@ import javax.inject.Inject;
 
 import org.camunda.consulting.services.CreditCardService;
 
-@JobWorker(taskType = "creditCardCharging")
+
 @ApplicationScoped
-public class ChargeCreditCardHandler implements JobHandler {
+public class ChargeCreditCardHandler {
   private final CreditCardService creditCardService;
 
   @Inject
@@ -24,7 +24,7 @@ public class ChargeCreditCardHandler implements JobHandler {
     this(null);
   }
 
-  @Override
+  @JobWorker(taskType = "creditCardCharging")
   public void handle(JobClient jobClient,  ActivatedJob job) {
     // extract variables from process instance
     String cardNumber = (String) job.getVariablesAsMap().get("cardNumber");
@@ -34,20 +34,17 @@ public class ChargeCreditCardHandler implements JobHandler {
     
     // execute business logic using the variables
     if (cvc.equals("789")) {
-      jobClient
-          .newFailCommand(job)
-          .retries(0)
-          .errorMessage("CVC invalid!")
-          .send()
-          .join();
+      throw new RuntimeException("CVC invalid!");
+//      jobClient
+//          .newFailCommand(job)
+//          .retries(0)
+//          .errorMessage("CVC invalid!")
+//          .send()
+//          .join();
     }
     
     try {
       creditCardService.chargeAmount(cardNumber, cvc, expiryData, amount);
-      jobClient
-          .newCompleteCommand(job)
-          .send()
-          .join();
     } catch (Exception exc) {
       jobClient
           .newThrowErrorCommand(job)

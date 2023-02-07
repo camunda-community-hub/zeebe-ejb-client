@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
@@ -42,9 +43,15 @@ public class ZeebeEjbProcessApplication {
   private void registerWorkers() {
     // TODO: support annotation on method
     LOG.info("Register workers");
-    beanManager.createInstance().select(JobHandler.class).forEach(handler -> {
+    beanManager.createInstance()
+        //.select(ApplicationScoped.class)
+        .select(JobHandler.class).forEach(handler -> {
       Optional.ofNullable(handler.getClass().getAnnotation(JobWorker.class)).ifPresent(annotation -> {
-        createWorker(handler, annotation);
+        if (annotation.autoComplete()) {
+          createWorker(new AutoCompleteWrapper(handler), annotation);
+        } else {
+          createWorker(handler, annotation);
+        }
       });
     });
   }
