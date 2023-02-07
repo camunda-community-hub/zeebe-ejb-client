@@ -12,7 +12,8 @@ import org.camunda.consulting.services.CreditCardService;
 
 
 @ApplicationScoped
-public class ChargeCreditCardHandler {
+@JobWorker(taskType = "creditCardCharging")
+public class ChargeCreditCardHandler implements JobHandler {
   private final CreditCardService creditCardService;
 
   @Inject
@@ -24,7 +25,6 @@ public class ChargeCreditCardHandler {
     this(null);
   }
 
-  @JobWorker(taskType = "creditCardCharging")
   public void handle(JobClient jobClient,  ActivatedJob job) {
     // extract variables from process instance
     String cardNumber = (String) job.getVariablesAsMap().get("cardNumber");

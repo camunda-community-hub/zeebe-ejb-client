@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RUNTIME)
-@Target(METHOD)
+@Target(TYPE)
+@Inherited
 public @interface JobWorker {
   
   String taskType();

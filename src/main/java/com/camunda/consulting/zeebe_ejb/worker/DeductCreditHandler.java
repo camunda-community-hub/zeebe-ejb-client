@@ -16,7 +16,8 @@ import javax.inject.Inject;
 
 
 @ApplicationScoped
-public class DeductCreditHandler {
+@JobWorker(taskType = "creditDeduction", timeout = 15, autoComplete = false)
+public class DeductCreditHandler implements JobHandler {
 
   private final CustomerService service;
   
@@ -30,8 +31,6 @@ public class DeductCreditHandler {
   public DeductCreditHandler() {
     this(null);
   }
-
-  @JobWorker(taskType = "creditDeduction", timeout = 15, autoComplete = false)
   public void handle(JobClient client, ActivatedJob job) throws Exception {
 
     LOG.info("handler invoked for job {}", job);
