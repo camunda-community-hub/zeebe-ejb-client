@@ -4,9 +4,9 @@
 
 This example shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
 
-It contains a single startup bean to deploy the process diagram and activate the workers. [(ZeebeEjbProcessApplication)](src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
+It contains a single startup bean to activate the workers. [(ZeebeEjbProcessApplication)](src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
 
-This Zeebe application get all jobworker implementations injected to register them.
+This Zeebe application registers all jobworker implementations that are annotated with `@JobWorker(taskType="myType")`.
 
 The Job workers require an `@ApplicationScoped` for this. See [DeductCreditHandler](src/main/java/com/camunda/consulting/zeebe_ejb/worker/DeductCreditHandler.java).
 

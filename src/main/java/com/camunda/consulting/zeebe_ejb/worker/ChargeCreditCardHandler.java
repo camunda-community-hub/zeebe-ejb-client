@@ -1,5 +1,6 @@
 package com.camunda.consulting.zeebe_ejb.worker;
 
+import com.camunda.consulting.zeebe_ejb.JobWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;
@@ -9,7 +10,9 @@ import javax.inject.Inject;
 
 import org.camunda.consulting.services.CreditCardService;
 
+
 @ApplicationScoped
+@JobWorker(taskType = "creditCardCharging")
 public class ChargeCreditCardHandler implements JobHandler {
   private final CreditCardService creditCardService;
 
@@ -22,7 +25,6 @@ public class ChargeCreditCardHandler implements JobHandler {
     this(null);
   }
 
-  @Override
   public void handle(JobClient jobClient,  ActivatedJob job) {
     // extract variables from process instance
     String cardNumber = (String) job.getVariablesAsMap().get("cardNumber");
@@ -32,20 +34,17 @@ public class ChargeCreditCardHandler implements JobHandler {
     
     // execute business logic using the variables
     if (cvc.equals("789")) {
-      jobClient
-          .newFailCommand(job)
-          .retries(0)
-          .errorMessage("CVC invalid!")
-          .send()
-          .join();
+      throw new RuntimeException("CVC invalid!");
+//      jobClient
+//          .newFailCommand(job)
+//          .retries(0)
+//          .errorMessage("CVC invalid!")
+//          .send()
+//          .join();
     }
     
     try {
       creditCardService.chargeAmount(cardNumber, cvc, expiryData, amount);
-      jobClient
-          .newCompleteCommand(job)
-          .send()
-          .join();
     } catch (Exception exc) {
       jobClient
           .newThrowErrorCommand(job)
