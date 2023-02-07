@@ -1,25 +1,19 @@
 package com.camunda.consulting.zeebe_ejb;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.camunda.consulting.zeebe_ejb.worker.ChargeCreditCardHandler;
-import com.camunda.consulting.zeebe_ejb.worker.DeductCreditHandler;
-
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.Topology;
 import io.camunda.zeebe.client.api.worker.JobHandler;
 
