@@ -1,5 +1,6 @@
 package com.camunda.consulting.zeebe_ejb.worker;
 
+import com.camunda.consulting.zeebe_ejb.JobWorker;
 import org.camunda.consulting.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+@JobWorker(taskType = "creditDeduction", timeout = 15)
 @ApplicationScoped
 public class DeductCreditHandler implements JobHandler {
 

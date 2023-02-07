@@ -1,5 +1,6 @@
 package com.camunda.consulting.zeebe_ejb.worker;
 
+import com.camunda.consulting.zeebe_ejb.JobWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;
@@ -9,6 +10,7 @@ import javax.inject.Inject;
 
 import org.camunda.consulting.services.CreditCardService;
 
+@JobWorker(taskType = "creditCardCharging")
 @ApplicationScoped
 public class ChargeCreditCardHandler implements JobHandler {
   private final CreditCardService creditCardService;

@@ -33,19 +33,14 @@ public class ZeebeEjbProcessApplication {
   @Inject
   BeanManager beanManager;
   
-  @Inject
-  DeductCreditHandler deductCreditHandler;
-  
-  @Inject
-  ChargeCreditCardHandler chargeCreditCardHandler;
-  
   @PostConstruct
   public void start() {
-//    startWorker();
+    clusterConnection();
     registerWorkers();
   }
   
   private void registerWorkers() {
+    // TODO: support annotation on method
     LOG.info("Register workers");
     beanManager.createInstance().select(JobHandler.class).forEach(handler -> {
       Optional.ofNullable(handler.getClass().getAnnotation(JobWorker.class)).ifPresent(annotation -> {
@@ -60,39 +55,17 @@ public class ZeebeEjbProcessApplication {
         .newWorker()
         .jobType(annotation.taskType())
         .handler(handler)
-        .timeout(Duration.ofSeconds(10))
-        .requestTimeout(Duration.ofSeconds(30))
+        .timeout(Duration.ofSeconds(annotation.timeout()))
+        .requestTimeout(Duration.ofSeconds(annotation.requestTimeout()))
         .open();
     LOG.info("Worker is open");
   }
 
-  private void startWorker() {
+  private void clusterConnection() {
     LOG.info("cluster available?");
     zeebeClient = ZeebeClient.newClientBuilder().gatewayAddress("localhost:26500").usePlaintext().build();
     Topology topology = zeebeClient.newTopologyRequest().send().join();
     LOG.info("Cluster Topology: {}", topology);
-    
-    // Deploy the process model
-    DeploymentEvent deploymentEvent = zeebeClient.newDeployResourceCommand().addResourceFromClasspath("ejb-payment-process.bpmn").send().join();
-    
-    LOG.info("Deployed processes: {}", deploymentEvent.getProcesses());
-    
-//    zeebeClient
-//        .newWorker()
-//        .jobType("creditDeduction")
-//        .handler(deductCreditHandler)
-//        .timeout(Duration.of(10, ChronoUnit.SECONDS))
-//        .requestTimeout(Duration.of(30, ChronoUnit.SECONDS))
-//        .open();
-//    zeebeClient
-//        .newWorker()
-//        .jobType("creditCardCharging")
-//        .handler(chargeCreditCardHandler)
-//        .timeout(Duration.of(10, ChronoUnit.SECONDS))
-//        .requestTimeout(Duration.of(30, ChronoUnit.SECONDS))
-//        .open();
-    
-    LOG.info("worker is open");
   }
 
   @PreDestroy
