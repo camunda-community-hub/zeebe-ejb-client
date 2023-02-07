@@ -31,24 +31,30 @@ public class DeductCreditHandler implements JobHandler {
   public DeductCreditHandler() {
     this(null);
   }
+  
   public void handle(JobClient client, ActivatedJob job) throws Exception {
-
     LOG.info("handler invoked for job {}", job);
 
-    // extract variables from process instance
+    Map<String, Object> resultVariables = creditDeduction(job);
+
+    client.newCompleteCommand(job).variables(resultVariables).send().join();
+    LOG.info("handler completed job {}", job);
+  }
+
+  public Map<String, Object> creditDeduction(ActivatedJob job) {
     Map<String, Object> variables = job.getVariablesAsMap();
     String customerId = (String) variables.get("customerId");
     Double amount = (Double) variables.get("orderTotal");
+    
     // execute business logic using the variables
     Double openAmount = service.deductCredit(customerId, amount);
     Double customerCredit = service.getCustomerCredit(customerId);
-    // save the results to the process instance
+    
+    // return the results
     Map<String, Object> resultVariables = new HashMap<>();
     resultVariables.put("openAmount", openAmount);
     resultVariables.put("customerCredit", customerCredit);
-    client.newCompleteCommand(job).variables(resultVariables).send().join();
-
-    LOG.info("handler completed job {}", job);
+    return resultVariables;
   }
 
 }
