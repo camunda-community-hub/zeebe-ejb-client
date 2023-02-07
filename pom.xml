@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.camunda.consulting</groupId>
-  <artifactId>zeebe-ejb-client</artifactId>
+  <groupId>org.camunda.community.client</groupId>
+  <artifactId>zeebe-ejb-client-root</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>Zeebe EJB Client</name>
+  <packaging>pom</packaging>
+  <name>Zeebe EJB Client Root</name>
   <description>Zeebe Client running in an Java EE Server</description>
   
   <properties>
     <zeebe.version>8.1.0</zeebe.version>
+    <javaee.version>8.0.1</javaee.version>
 
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -17,45 +18,44 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.camunda</groupId>
-      <artifactId>zeebe-client-java</artifactId>
-      <version>${zeebe.version}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>8.0.1</version>
-      <scope>provided</scope>
-    </dependency>
-    
-  </dependencies>
+  <modules>
+    <module>client</module>
+    <module>example</module>
+  </modules>
+  
+  <dependencyManagement>    
+    <dependencies>
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-client-java</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>${javaee.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      
+    </dependencies>
+  </dependencyManagement>
   
   <build>
     <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.3.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.wildfly.plugins</groupId>
-        <artifactId>wildfly-maven-plugin</artifactId>
-        <version>2.0.1.Final</version>
-      </plugin>
-    </plugins>
+    <pluginManagement>     
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.10.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   
 </project>
