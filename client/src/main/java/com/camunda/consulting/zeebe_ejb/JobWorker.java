@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface JobWorker {
   
-  String taskType();
+  String type();
 
   /**
    * in seconds

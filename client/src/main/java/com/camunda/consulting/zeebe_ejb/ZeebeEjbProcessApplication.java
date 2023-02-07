@@ -51,10 +51,10 @@ public class ZeebeEjbProcessApplication {
   }
 
   private void createWorker(JobHandler handler, JobWorker annotation) {
-    LOG.info("Register handler {} for type {}", handler, annotation.taskType());
+    LOG.info("Register handler {} for type {}", handler, annotation.type());
     zeebeClient
         .newWorker()
-        .jobType(annotation.taskType())
+        .jobType(annotation.type())
         .handler(handler)
         .timeout(Duration.ofSeconds(annotation.timeout()))
         .requestTimeout(Duration.ofSeconds(annotation.requestTimeout()))

@@ -12,7 +12,7 @@ import org.camunda.consulting.services.CreditCardService;
 
 
 @ApplicationScoped
-@JobWorker(taskType = "creditCardCharging")
+@JobWorker(type = "creditCardCharging")
 public class ChargeCreditCardHandler implements JobHandler {
   private final CreditCardService creditCardService;
 

@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 
 @ApplicationScoped
-@JobWorker(taskType = "creditDeduction", timeout = 15, autoComplete = false)
+@JobWorker(type = "creditDeduction", timeout = 15, autoComplete = false)
 public class DeductCreditHandler implements JobHandler {
 
   private final CustomerService service;
