@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>org.camunda.community.client</groupId>
   <artifactId>zeebe-ejb-client-root</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -7,6 +8,13 @@
   <name>Zeebe EJB Client Root</name>
   <description>Zeebe Client running in an Java EE Server</description>
   
+  <parent>
+    <groupId>org.camunda.community</groupId>
+    <artifactId>community-hub-release-parent</artifactId>
+    <version>1.4.1</version>
+    <relativePath/>
+  </parent>
+
   <properties>
     <zeebe.version>8.1.0</zeebe.version>
     <javaee.version>8.0.1</javaee.version>
