@@ -6,19 +6,29 @@
 
 ## Overview
 
-This example shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
+### Library
+This repository contains a library that enables your JavaEE application as a Client for the Camunda-Platform-8 process engine.
 
-It contains a single startup bean to activate the workers. [(ZeebeEjbProcessApplication)](src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
+You can reuse your existing JavaEE code and use `@ApplicationScoped` beans in a job handler as the implementation for BPMN Service tasks and other elements.
 
-This Zeebe application registers all jobworker implementations that are annotated with `@JobWorker(taskType="myType")`.
+The library contains a single startup bean to activate the workers. [(ZeebeEjbProcessApplication)](client/src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
 
-The Job workers require an `@ApplicationScoped` for this. See [DeductCreditHandler](src/main/java/com/camunda/consulting/zeebe_ejb/worker/DeductCreditHandler.java).
+All application scoped beans that are annotated with `@JobWorker(type = "mytype")` are registered as workers on the Zeebe process engine.
+ 
+### Example
+It also contains example shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
 
-The Service implementation itself gets injected to the worker. They are annotated with `@Stateless`. See [CustomerService](src/main/java/org/camunda/consulting/services/CustomerService.java) 
+This Zeebe EJB client library registers all jobworker implementations that are annotated with `@JobWorker(taskType="myType")`.
+
+The Job workers require an `@ApplicationScoped` for this. See [DeductCreditHandler](example/src/main/java/com/camunda/consulting/zeebe_ejb/worker/DeductCreditHandler.java).
+
+The Service implementation itself gets injected to the worker. They are annotated with `@Stateless`. See [CustomerService](example/src/main/java/org/camunda/consulting/services/CustomerService.java) 
+
+To run the examples, you can deploy it to a running Wildfly server with `mvn clean wildfly:deploy`. During deployment all workers are registered in the Zeebe process engine and get activated.
 
 ## Start process instances
 
-The project contains a REST Api to start process instances. Check the content of the package `com.camunda.consulting.zeebe_ejb.rest`.
+The example contains a REST Api to start process instances. Check the content of the package `com.camunda.consulting.zeebe_ejb.rest`.
 
 To start process instances, use a REST client like curl:
 
