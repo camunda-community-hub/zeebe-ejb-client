@@ -3,7 +3,7 @@
   
   <groupId>org.camunda.community.client</groupId>
   <artifactId>zeebe-ejb-client-root</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Zeebe EJB Client Root</name>
   <description>Zeebe Client running in an Java EE Server</description>
@@ -12,7 +12,7 @@
     <groupId>org.camunda.community</groupId>
     <artifactId>community-hub-release-parent</artifactId>
     <version>1.4.1</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <properties>
