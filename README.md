@@ -14,11 +14,35 @@ You can reuse your existing JavaEE code and use `@ApplicationScoped` beans in a 
 The library contains a single startup bean to activate the workers. [(ZeebeEjbProcessApplication)](client/src/main/java/com/camunda/consulting/zeebe_ejb/ZeebeEjbProcessApplication.java)
 
 All application scoped beans that are annotated with `@JobWorker(type = "mytype")` are registered as workers on the Zeebe process engine.
- 
-### Example
-It also contains example shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
 
-This Zeebe EJB client library registers all jobworker implementations that are annotated with `@JobWorker(taskType="myType")`.
+#### Configuration
+
+The Library uses the Zeebe java client configuration properties. 
+
+It reads a file named `zeebeClient.properties` from the class-path.
+ 
+Connection properties for [Camunda 8 SaaS Cloud cluster](https://docs.camunda.io/docs/components/console/manage-clusters/manage-api-clients/#create-a-client): 
+
+```
+zeebe.client.cloud.clusterId=xxx
+zeebe.client.cloud.clientId=xxx
+zeebe.client.cloud.secret=xxx
+zeebe.client.cloud.region=bru-2
+```
+
+Connection properties for a local installation with [Docker compose](https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#docker-compose):
+
+```
+zeebe.client.gateway.address=localhost:26500
+zeebe.client.security.plaintext=true
+```
+
+Other client connection properties are mentioned in this class: [io.camunda.zeebe.client.ClientProperties](https://github.com/camunda/zeebe/blob/main/clients/java/src/main/java/io/camunda/zeebe/client/ClientProperties.java)
+
+### Example
+This repository also contains an example that shows how to reuse existing EJBs in your Zeebe client on an Java-EE Server.
+
+The Zeebe EJB client library registers all jobworker implementations that are annotated with `@JobWorker(taskType="myType")`.
 
 The Job workers require an `@ApplicationScoped` for this. See [DeductCreditHandler](example/src/main/java/com/camunda/consulting/zeebe_ejb/worker/DeductCreditHandler.java).
 
@@ -26,7 +50,7 @@ The Service implementation itself gets injected to the worker. They are annotate
 
 To run the examples, you can deploy it to a running Wildfly server with `mvn clean wildfly:deploy`. During deployment all workers are registered in the Zeebe process engine and get activated.
 
-## Start process instances
+#### Start process instances
 
 The example contains a REST Api to start process instances. Check the content of the package `com.camunda.consulting.zeebe_ejb.rest`.
 

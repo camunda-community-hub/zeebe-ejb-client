@@ -1,7 +1,10 @@
 package com.camunda.consulting.zeebe_ejb;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,13 +16,17 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.camunda.zeebe.client.ClientProperties;
 import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.ZeebeClientBuilder;
 import io.camunda.zeebe.client.api.response.Topology;
 import io.camunda.zeebe.client.api.worker.JobHandler;
 
 @Singleton
 @Startup
 public class ZeebeEjbProcessApplication {
+
+  public static final String CONFIGURATION_PROPERTIES = "zeebeClient.properties";
   
   private static final Logger LOG = LoggerFactory.getLogger(ZeebeEjbProcessApplication.class);
   
@@ -30,7 +37,14 @@ public class ZeebeEjbProcessApplication {
   
   @PostConstruct
   public void start() {
-    clusterConnection();
+    Properties config = null;
+    try {
+      config = loadZeebeClientConfig();
+      clusterConnection(config);
+    } catch (Exception e) {
+      // Abort deployment
+      throw new RuntimeException(e.getLocalizedMessage());
+    }
     registerWorkers();
   }
   
@@ -61,12 +75,35 @@ public class ZeebeEjbProcessApplication {
         .open();
     LOG.info("Worker is open");
   }
-
-  private void clusterConnection() {
-    LOG.info("cluster available?");
-    zeebeClient = ZeebeClient.newClientBuilder().gatewayAddress("localhost:26500").usePlaintext().build();
+  
+  private void clusterConnection(Properties config) {
+    LOG.info("Cloud cluster available?");
+    ZeebeClientBuilder zeebeClientBuilder;
+    if (config.getProperty(ClientProperties.CLOUD_CLUSTER_ID) != null) {
+      zeebeClientBuilder = ZeebeClient.newCloudClientBuilder()
+          .withClusterId(config.getProperty(ClientProperties.CLOUD_CLUSTER_ID))
+          .withClientId(config.getProperty(ClientProperties.CLOUD_CLIENT_ID))
+          .withClientSecret(ClientProperties.CLOUD_CLIENT_SECRET);      
+    } else {
+      zeebeClientBuilder = ZeebeClient.newClientBuilder();
+    }
+    
+    zeebeClient = zeebeClientBuilder.withProperties(config).build();
+    LOG.info("Creating ZeebeClient using {}", zeebeClientBuilder);
+        
     Topology topology = zeebeClient.newTopologyRequest().send().join();
     LOG.info("Cluster Topology: {}", topology);
+  }
+
+  private Properties loadZeebeClientConfig() throws IOException {
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    InputStream input = classLoader.getResourceAsStream(CONFIGURATION_PROPERTIES);
+    if (input == null) {
+      throw new IOException("'" + CONFIGURATION_PROPERTIES + "' not found");
+    }
+    Properties properties = new Properties();
+    properties.load(input);
+    return properties;
   }
 
   @PreDestroy
