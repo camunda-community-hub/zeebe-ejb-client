@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RUNTIME)
-@Target(TYPE)
+@Target({TYPE, METHOD})
 @Inherited
 public @interface JobWorker {
   

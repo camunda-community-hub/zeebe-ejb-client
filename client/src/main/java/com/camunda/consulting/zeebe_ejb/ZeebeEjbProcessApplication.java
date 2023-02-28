@@ -3,16 +3,27 @@ package com.camunda.consulting.zeebe_ejb;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.EJBContext;
+import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.spi.EJBContainerProvider;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
+import javax.naming.InitialContext;
 
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +34,7 @@ import io.camunda.zeebe.client.api.response.Topology;
 import io.camunda.zeebe.client.api.worker.JobHandler;
 
 @Singleton
+@Remote
 @Startup
 public class ZeebeEjbProcessApplication {
 
@@ -34,6 +46,10 @@ public class ZeebeEjbProcessApplication {
   
   @Inject
   BeanManager beanManager;
+
+  @Inject
+  @Any
+  Instance<Object> beans;
   
   @PostConstruct
   public void start() {
@@ -49,19 +65,22 @@ public class ZeebeEjbProcessApplication {
   }
   
   private void registerWorkers() {
-    // TODO: support annotation on method
     LOG.info("Register workers");
-    beanManager.createInstance()
+    Instance<Object> beans = beanManager.createInstance();
         //.select(ApplicationScoped.class)
+    beans
         .select(JobHandler.class).forEach(handler -> {
-      Optional.ofNullable(handler.getClass().getAnnotation(JobWorker.class)).ifPresent(annotation -> {
-        if (annotation.autoComplete()) {
-          createWorker(new AutoCompleteWrapper(handler), annotation);
-        } else {
-          createWorker(handler, annotation);
-        }
-      });
+      Optional.ofNullable(handler.getClass().getAnnotation(JobWorker.class)).ifPresent(annotation ->
+          createWorker(handler, annotation));
     });
+    beanManager.getBeans(Object.class,new AnnotationLiteral<Any>() {})
+        //.select(ApplicationScoped.class)
+        .forEach(bean -> {Arrays.stream(bean.getBeanClass().getMethods())
+            .forEach(method -> {
+              Optional.ofNullable(method.getAnnotation(JobWorker.class)).ifPresent(annotation -> {
+                JobHandler handler = (client, job) -> method.invoke(bean, client, job);
+                createWorker(handler, annotation);
+              });});});
   }
 
   private void createWorker(JobHandler handler, JobWorker annotation) {
@@ -69,7 +88,7 @@ public class ZeebeEjbProcessApplication {
     zeebeClient
         .newWorker()
         .jobType(annotation.type())
-        .handler(handler)
+        .handler(annotation.autoComplete() ? new AutoCompleteWrapper(handler) : handler)
         .timeout(Duration.ofSeconds(annotation.timeout()))
         .requestTimeout(Duration.ofSeconds(annotation.requestTimeout()))
         .open();
