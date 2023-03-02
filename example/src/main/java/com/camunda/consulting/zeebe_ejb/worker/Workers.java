@@ -3,15 +3,14 @@ package com.camunda.consulting.zeebe_ejb.worker;
 import com.camunda.consulting.zeebe_ejb.JobWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
+import java.util.HashMap;
+import java.util.Map;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import org.camunda.consulting.services.CreditCardService;
 import org.camunda.consulting.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 
 @ApplicationScoped
 public class Workers {
@@ -27,7 +26,7 @@ public class Workers {
   }
 
   @JobWorker(type = "creditCardCharging")
-  public void handleChargeCreditCard(JobClient jobClient,  ActivatedJob job) {
+  public void handleChargeCreditCard(JobClient jobClient, ActivatedJob job) {
     // extract variables from process instance
     String cardNumber = (String) job.getVariablesAsMap().get("cardNumber");
     String cvc = (String) job.getVariablesAsMap().get("cvc");
@@ -42,7 +41,8 @@ public class Workers {
     try {
       creditCardService.chargeAmount(cardNumber, cvc, expiryData, amount);
     } catch (Exception exc) {
-      jobClient.newThrowErrorCommand(job)
+      jobClient
+          .newThrowErrorCommand(job)
           .errorCode("chargingError")
           .errorMessage("We failed to charge credit card with card number " + cardNumber)
           .send()

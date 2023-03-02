@@ -2,20 +2,16 @@ package org.camunda.consulting.services;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ejb.Stateless;
 
 @Stateless
 public class CustomerService {
 
   private static final Logger LOG = LoggerFactory.getLogger(CustomerService.class);
 
-  /**
-   * The customer credit are the last digits of the customer id
-   */
+  /** The customer credit are the last digits of the customer id */
   private Pattern pattern = Pattern.compile("(.*?)(\\d*)");
 
   /**
@@ -40,7 +36,6 @@ public class CustomerService {
     return openAmount;
   }
 
-
   /**
    * Get the current customer credit
    *
@@ -56,5 +51,4 @@ public class CustomerService {
     LOG.info("customer {} has credit of {}", customerId, credit);
     return credit;
   }
-
 }

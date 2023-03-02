@@ -1,10 +1,9 @@
 package org.camunda.consulting.services;
 
+import java.time.LocalDate;
+import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ejb.Stateless;
-import java.time.LocalDate;
 
 @Stateless
 public class CreditCardService {
@@ -13,11 +12,16 @@ public class CreditCardService {
 
   public void chargeAmount(String cardNumber, String cvc, String expiryDate, Double amount) {
     if (!validateExpiryDate(expiryDate)) {
-      throw new RuntimeException("Invalid expiry date: " + expiryDate + "\nExpiry date must be in the future.");
+      throw new RuntimeException(
+          "Invalid expiry date: " + expiryDate + "\nExpiry date must be in the future.");
     }
 
-    LOG.info("charging card {} that expires on {} and has cvc {} with amount of {}",
-        cardNumber, expiryDate, cvc, amount);
+    LOG.info(
+        "charging card {} that expires on {} and has cvc {} with amount of {}",
+        cardNumber,
+        expiryDate,
+        cvc,
+        amount);
 
     LOG.info("payment completed");
   }
@@ -33,15 +37,13 @@ public class CreditCardService {
       if (month < 1 || month > 12 || year < now.getYear()) {
         return false;
       }
-      if (year > now.getYear() ||
-          (year == now.getYear() && month >= now.getMonthValue())) {
+      if (year > now.getYear() || (year == now.getYear() && month >= now.getMonthValue())) {
         return true;
       } else {
         return false;
       }
-    } catch (NumberFormatException|IndexOutOfBoundsException e) {
+    } catch (NumberFormatException | IndexOutOfBoundsException e) {
       return false;
     }
   }
-
 }

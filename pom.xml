@@ -18,6 +18,10 @@
   <properties>
     <zeebe.version>8.1.0</zeebe.version>
     <javaee.version>8.0.1</javaee.version>
+    
+    <!-- when updating this version, also change it in .idea/externalDependencies.xml -->
+    <plugin.version.google-java-format>1.15.0</plugin.version.google-java-format>
+
 
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -62,6 +66,26 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.2</version>
         </plugin>
+        <!-- Google code format plugin -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <configuration>
+            <java>
+              <googleJavaFormat>
+                <version>${plugin.version.google-java-format}</version>
+                <style>GOOGLE</style>
+              </googleJavaFormat>
+            </java>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.google.googlejavaformat</groupId>
+              <artifactId>google-java-format</artifactId>
+              <version>${plugin.version.google-java-format}</version>
+            </dependency>
+          </dependencies>
+        </plugin>      
       </plugins>
     </pluginManagement>
   </build>

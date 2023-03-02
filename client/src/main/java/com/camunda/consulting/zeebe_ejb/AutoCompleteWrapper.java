@@ -12,7 +12,6 @@ public class AutoCompleteWrapper implements JobHandler {
     this.handler = handler;
   }
 
-
   //      if (workerValue.getAutoComplete()) {
   //        CommandWrapper command = new CommandWrapper(
   //            createCompleteCommand(jobClient, job, result),
@@ -25,15 +24,9 @@ public class AutoCompleteWrapper implements JobHandler {
     try {
       // result = workerValue.getMethodInfo().invoke(args.toArray())
       handler.handle(client, job);
-      client.newCompleteCommand(job)
-          .send()
-          .join();
+      client.newCompleteCommand(job).send().join();
     } catch (Exception exception) {
-      client.newFailCommand(job)
-          .retries(0)
-          .errorMessage(exception.getMessage())
-          .send()
-          .join();
+      client.newFailCommand(job).retries(0).errorMessage(exception.getMessage()).send().join();
     }
   }
 }

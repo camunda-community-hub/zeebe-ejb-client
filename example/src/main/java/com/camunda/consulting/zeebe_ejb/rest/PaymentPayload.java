@@ -1,14 +1,19 @@
 package com.camunda.consulting.zeebe_ejb.rest;
 
 public class PaymentPayload {
-  
+
   private String customerId;
   private double orderTotal;
   private String creditCardNumber;
   private String expiryDate;
   private String cvc;
-  
-  public PaymentPayload(String customerId, double orderTotal, String creditCardNumber, String expiryDate, String cvc) {
+
+  public PaymentPayload(
+      String customerId,
+      double orderTotal,
+      String creditCardNumber,
+      String expiryDate,
+      String cvc) {
     super();
     this.customerId = customerId;
     this.orderTotal = orderTotal;
@@ -16,7 +21,7 @@ public class PaymentPayload {
     this.expiryDate = expiryDate;
     this.cvc = cvc;
   }
-  
+
   public PaymentPayload() {
     super();
   }
@@ -63,7 +68,8 @@ public class PaymentPayload {
 
   @Override
   public String toString() {
-    return String.format("PaymentPayload [customerId=%s, orderTotal=%s, creditCardNumber=%s, expiryDate=%s, cvc=%s]",
+    return String.format(
+        "PaymentPayload [customerId=%s, orderTotal=%s, creditCardNumber=%s, expiryDate=%s, cvc=%s]",
         customerId, orderTotal, creditCardNumber, expiryDate, cvc);
   }
 }

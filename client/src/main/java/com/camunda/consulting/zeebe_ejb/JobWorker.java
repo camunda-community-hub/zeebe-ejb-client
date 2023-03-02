@@ -13,21 +13,22 @@ import java.lang.annotation.Target;
 @Target({TYPE, METHOD})
 @Inherited
 public @interface JobWorker {
-  
+
   String type();
 
   /**
    * in seconds
+   *
    * @return
    */
   long timeout() default 10L;
 
   /**
    * in seconds
+   *
    * @return
    */
   long requestTimeout() default 30L;
 
   boolean autoComplete() default true;
-
 }

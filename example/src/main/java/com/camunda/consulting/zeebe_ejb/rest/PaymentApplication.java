@@ -4,6 +4,4 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("/payment")
-public class PaymentApplication extends Application {
-
-}
+public class PaymentApplication extends Application {}
