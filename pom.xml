@@ -16,7 +16,7 @@
   </parent>
 
   <properties>
-    <zeebe.version>8.1.0</zeebe.version>
+    <zeebe.version>8.1.9</zeebe.version>
     <javaee.version>8.0.1</javaee.version>
     
     <!-- when updating this version, also change it in .idea/externalDependencies.xml -->
