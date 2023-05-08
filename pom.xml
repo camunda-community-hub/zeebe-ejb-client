@@ -34,6 +34,7 @@
     <module>client</module>
     <module>examples/single-jobworker-class-example</module>
     <module>examples/jobworker-interface-example</module>
+    <module>examples/delegate-example</module>
   </modules>
   
   <dependencyManagement>    
