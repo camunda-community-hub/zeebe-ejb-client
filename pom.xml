@@ -32,7 +32,7 @@
 
   <modules>
     <module>client</module>
-    <module>example</module>
+    <module>examples/single-jobworker-class-example</module>
   </modules>
   
   <dependencyManagement>    
