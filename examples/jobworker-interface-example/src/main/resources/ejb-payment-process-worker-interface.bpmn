@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1kiajgx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+  <bpmn:process id="EjbPaymentProcessWorkerInterface" name="EJB Payment process for worker interface" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Payment requested">
+      <bpmn:outgoing>Flow_04h7vab</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_04h7vab" sourceRef="StartEvent_1" targetRef="Activity_1vwtc60" />
+    <bpmn:exclusiveGateway id="Gateway_1scved7" name="Credit suffifient to pay?">
+      <bpmn:incoming>Flow_0tr3idd</bpmn:incoming>
+      <bpmn:outgoing>Flow_137of9f</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ic08lv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0tr3idd" sourceRef="Activity_1vwtc60" targetRef="Gateway_1scved7" />
+    <bpmn:exclusiveGateway id="Gateway_0ax2wwq">
+      <bpmn:incoming>Flow_137of9f</bpmn:incoming>
+      <bpmn:incoming>Flow_07rgg7k</bpmn:incoming>
+      <bpmn:outgoing>Flow_19jr6cj</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_137of9f" name="yes" sourceRef="Gateway_1scved7" targetRef="Gateway_0ax2wwq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=openAmount &lt;= 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_04xccrl" name="Payment completed">
+      <bpmn:incoming>Flow_19jr6cj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_19jr6cj" sourceRef="Gateway_0ax2wwq" targetRef="Event_04xccrl" />
+    <bpmn:sequenceFlow id="Flow_1ic08lv" name="no" sourceRef="Gateway_1scved7" targetRef="Activity_03ty1a2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=openAmount &gt; 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_07rgg7k" sourceRef="Activity_03ty1a2" targetRef="Gateway_0ax2wwq" />
+    <bpmn:serviceTask id="Activity_1vwtc60" name="Deduct customer credit">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="creditDeduction" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04h7vab</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tr3idd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_03ty1a2" name="Charge credit card">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="creditCardCharging" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ic08lv</bpmn:incoming>
+      <bpmn:outgoing>Flow_07rgg7k</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EjbPaymentProcessWorkerInterface">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="173" y="202" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1scved7_di" bpmnElement="Gateway_1scved7" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="407" y="114.5" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ax2wwq_di" bpmnElement="Gateway_0ax2wwq" isMarkerVisible="true">
+        <dc:Bounds x="655" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_04xccrl_di" bpmnElement="Event_04xccrl">
+        <dc:Bounds x="752" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="745" y="202" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0qc1fas_di" bpmnElement="Activity_1vwtc60">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yeaqwt_di" bpmnElement="Activity_03ty1a2">
+        <dc:Bounds x="520" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_04h7vab_di" bpmnElement="Flow_04h7vab">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tr3idd_di" bpmnElement="Flow_0tr3idd">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_137of9f_di" bpmnElement="Flow_137of9f">
+        <di:waypoint x="475" y="177" />
+        <di:waypoint x="655" y="177" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="557" y="159" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19jr6cj_di" bpmnElement="Flow_19jr6cj">
+        <di:waypoint x="705" y="177" />
+        <di:waypoint x="752" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ic08lv_di" bpmnElement="Flow_1ic08lv">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="290" />
+        <di:waypoint x="520" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="459" y="243" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07rgg7k_di" bpmnElement="Flow_07rgg7k">
+        <di:waypoint x="620" y="290" />
+        <di:waypoint x="680" y="290" />
+        <di:waypoint x="680" y="202" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
