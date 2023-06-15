@@ -77,7 +77,7 @@ To start process instances, use a REST client like curl:
 curl for cmd.exe
 
 ```
-curl --location --request POST "http://localhost:8080/zeebe-ejb-client/payment/command/start/" ^
+curl --location --request POST "http://localhost:8080/zeebe-ejb-example-worker-interface/payment/command/start/" ^
 --header "Content-Type: application/json" ^
 --data-raw "{\"customerId\": \"12\", \"orderTotal\": 39.99, \"creditCardNumber\": \"1234123412341234\", \"cvc\": \"789\", \"expiryDate\": \"07/24\"}"
 ```
