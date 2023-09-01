@@ -18,12 +18,11 @@
   </properties>
 
   <dependencies>
-	<dependency>
-	  <groupId>org.camunda.community.client</groupId>
-	  <artifactId>camunda-7-cdi-adapter</artifactId>
-	  <version>0.0.2-SNAPSHOT</version>
-	</dependency>
-	
+    <dependency>
+        <groupId>org.camunda.community.client</groupId>
+        <artifactId>camunda-7-cdi-adapter</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
