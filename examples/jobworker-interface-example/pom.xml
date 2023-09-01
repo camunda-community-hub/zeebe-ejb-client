@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.camunda.consulting</groupId>
   <artifactId>zeebe-ejb-example-worker-interface</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>Zeebe EJB Example Application</name>
   <description>Zeebe Client running in an Java EE Server</description>
@@ -21,7 +21,7 @@
     <dependency>
       <groupId>org.camunda.community.client</groupId>
       <artifactId>zeebe-ejb-client</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.3-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
