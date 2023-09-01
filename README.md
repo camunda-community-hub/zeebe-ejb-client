@@ -125,4 +125,8 @@ curl --location --request POST "http://localhost:8080/zeebe-ejb-example-worker-i
 Just replace the Camunda 7 engine dependency with the camunda-7-cdi-adapter
 dependency in the [pom.xml](examples/delegate-example/pom.xml).
 
+And add the
+[connection properties](examples/delegate-example/src/main/resources/zeebeClient.properties)
+pointing to the Zeebe cluster to your project.
+
 [You can find the complete example here.](examples/delegate-example/)
