@@ -4,3 +4,4 @@
 **/.project
 **/.idea
 camunda-7-examples/
+examples/delegate-example/exampleProcessVariables.json
