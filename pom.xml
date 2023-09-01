@@ -32,8 +32,9 @@
 
   <modules>
     <module>client</module>
-    <module>examples/single-jobworker-class-example</module>
+    <module>camunda-7-cdi-adapter</module>
     <module>examples/jobworker-interface-example</module>
+    <module>examples/delegate-example</module>
   </modules>
   
   <dependencyManagement>    
