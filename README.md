@@ -6,7 +6,7 @@
 
 ## Overview
 
-### Library
+### Zeebe EJB Client Library
 
 This repository contains a library that enables your JavaEE application as a
 Client for the Camunda-Platform-8 process engine.
@@ -87,13 +87,13 @@ The full XML element of a service task using the Camunda 7 CDI adapter:
 #### Reuse existing Java EE Beans in your new Worker
 
 This repository also contains an example that shows how to reuse existing EJBs
-in your Zeebe client on an Java-EE Server.
+in your Zeebe client on a Java-EE Server.
 
 The Zeebe EJB client library registers all methods and classes that are
 annotated with `@JobWorker(taskType="myType")`.
 
-The Job workers require an `@ApplicationScoped` for this. See
-[Workers.java](examples/jobworker-interface-example/src/main/java/com/camunda/consulting/zeebe_ejb/worker/Workers.java).
+The Job workers require an `@ApplicationScoped` annotation for this. See
+[CustomerCreditWorker.java](examples/jobworker-interface-example/src/main/java/org/camunda/consulting/workers/CustomerCreditWorker.java).
 
 The Service implementation itself gets injected to the worker. They are
 annotated with `@Stateless`. See
