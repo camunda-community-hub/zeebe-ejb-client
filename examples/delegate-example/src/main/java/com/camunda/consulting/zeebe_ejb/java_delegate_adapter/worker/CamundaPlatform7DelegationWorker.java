@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.camunda.bpm.engine.ArtifactFactory;
 import org.camunda.bpm.engine.cdi.CdiArtifactFactory;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
