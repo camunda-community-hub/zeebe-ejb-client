@@ -1,4 +1,4 @@
-package com.camunda.consulting.zeebe_ejb.java_delegate_adapter.juel;
+package com.camunda.consulting.zeebe_ejb.cdi_adapter.juel;
 
 import javax.enterprise.context.ApplicationScoped;
 import org.camunda.bpm.engine.cdi.CdiExpressionManager;

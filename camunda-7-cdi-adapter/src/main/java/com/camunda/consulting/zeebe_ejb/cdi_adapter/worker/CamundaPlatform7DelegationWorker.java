@@ -1,4 +1,4 @@
-package com.camunda.consulting.zeebe_ejb.java_delegate_adapter.worker;
+package com.camunda.consulting.zeebe_ejb.cdi_adapter.worker;
 
 import io.camunda.zeebe.client.api.command.CompleteJobCommandStep1;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.camunda.consulting.zeebe_ejb.JobWorker;
-import com.camunda.consulting.zeebe_ejb.java_delegate_adapter.execution.ZeebeJobDelegateExecution;
-import com.camunda.consulting.zeebe_ejb.java_delegate_adapter.juel.JuelExpressionResolver;
+import com.camunda.consulting.zeebe_ejb.cdi_adapter.execution.ZeebeJobDelegateExecution;
+import com.camunda.consulting.zeebe_ejb.cdi_adapter.juel.JuelExpressionResolver;
 
 @ApplicationScoped
 @JobWorker(type = "camunda-7-adapter", autoComplete = false)

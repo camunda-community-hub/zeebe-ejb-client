@@ -1,4 +1,4 @@
-package com.camunda.consulting.zeebe_ejb.java_delegate_adapter.execution;
+package com.camunda.consulting.zeebe_ejb.cdi_adapter.execution;
 
 import java.util.Collections;
 import java.util.List;

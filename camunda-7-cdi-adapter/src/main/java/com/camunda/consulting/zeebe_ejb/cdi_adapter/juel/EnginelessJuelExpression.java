@@ -1,4 +1,4 @@
-package com.camunda.consulting.zeebe_ejb.java_delegate_adapter.juel;
+package com.camunda.consulting.zeebe_ejb.cdi_adapter.juel;
 
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.delegate.BaseDelegateExecution;
