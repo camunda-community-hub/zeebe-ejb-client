@@ -3,6 +3,7 @@
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.client/zeebe-ejb-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.client/zeebe-ejb-client)
 
 ## Overview
 
@@ -57,7 +58,7 @@ library to your project:
 	<dependency>
 	  <groupId>org.camunda.community.client</groupId>
 	  <artifactId>camunda-7-cdi-adapter</artifactId>
-	  <version>0.0.2-SNAPSHOT</version>
+	  <version>0.0.2</version>
 	</dependency>
 ```
 
