@@ -21,7 +21,7 @@
     <dependency>
         <groupId>org.camunda.community.client</groupId>
         <artifactId>camunda-7-cdi-adapter</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>javax</groupId>

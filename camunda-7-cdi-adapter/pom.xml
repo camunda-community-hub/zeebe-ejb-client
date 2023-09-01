@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.camunda.community.client</groupId>
     <artifactId>zeebe-ejb-client-root</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
   </parent>
   
   <artifactId>camunda-7-cdi-adapter</artifactId>
@@ -14,7 +14,7 @@
     <dependency>
       <groupId>org.camunda.community.client</groupId>
       <artifactId>zeebe-ejb-client</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>0.0.2</version>
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
